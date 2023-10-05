@@ -1,0 +1,102 @@
+Claro, vou explicar o código passo a passo:
+
+1. **Pacotes e Importações**:
+   ```java
+   package filaProducao;
+   import listaligada.ListaLigada;
+   ```
+
+   Neste trecho, é declarado o pacote `filaProducao` para organizar as classes e é feita a importação da classe `ListaLigada` de um pacote chamado `listaligada`, que provavelmente contém a implementação da lista ligada.
+
+2. **Classe `FilaProducao`**:
+   ```java
+   public class FilaProducao  {
+       private ListaLigada fila = new ListaLigada();
+       private ListaLigada maquina1 = new ListaLigada();
+       private ListaLigada maquina2 = new ListaLigada();
+       private ListaLigada maquina3 = new ListaLigada();
+       private int pecaId = 1;
+   ```
+   
+   Aqui é declarada a classe principal `FilaProducao`, que irá simular o processo de produção com as máquinas e a fila. São criadas instâncias de `ListaLigada` para representar a fila e as três máquinas. `pecaId` é uma variável para atribuir IDs sequenciais às peças.
+
+3. **Método `adicionarPecasNaMaquina1`**:
+   ```java
+   public void adicionarPecasNaMaquina1(int quantidade) {
+       for (int i = 0; i < quantidade; i++) {
+           Peca peca = new Peca(pecaId++);
+           fila.adicionarNoFinal(peca);
+       }
+       imprimirFilas();
+   }
+   ```
+   
+   Este método adiciona uma quantidade especificada de peças à primeira máquina. Cada peça é criada com um ID sequencial e adicionada à fila. Em seguida, o método `imprimirFilas()` é chamado para exibir o estado atual das filas.
+
+4. **Método `processarMaquina`**:
+   ```java
+   public void processarMaquina(int numeroMaquina) {
+       ListaLigada maquinaAtual;
+       ListaLigada proximaMaquina;
+       
+       switch (numeroMaquina) {
+           case 1:
+               maquinaAtual = maquina1;
+               proximaMaquina = maquina2;
+               break;
+           case 2:
+               maquinaAtual = maquina2;
+               proximaMaquina = maquina3;
+               break;
+           case 3:
+               maquinaAtual = maquina3;
+               proximaMaquina = null;
+               break;
+           default:
+               throw new IllegalArgumentException("Número de máquina inválido");
+       }
+       
+       while (!maquinaAtual.ehVazia()) {
+           Peca peca = (Peca) maquinaAtual.removerDoComeco();
+           if (proximaMaquina != null) {
+               proximaMaquina.adicionarNoFinal(peca);
+           }
+       }
+       
+       imprimirFilas();
+   }
+   ```
+
+   Este método processa uma determinada máquina. Ele move as peças da máquina atual para a próxima máquina, seguindo a sequência 1 -> 2 -> 3. Ele remove peças da máquina atual e as adiciona à próxima máquina usando os métodos da lista ligada. Em seguida, ele chama `imprimirFilas()` para exibir o estado atual das filas.
+
+5. **Método `imprimirFilas`**:
+   ```java
+   public void imprimirFilas() {
+       System.out.println("Fila: " + fila);
+       System.out.println("Máquina 1: " + maquina1);
+       System.out.println("Máquina 2: " + maquina2);
+       System.out.println("Máquina 3: " + maquina3);
+       System.out.println();
+   }
+   ```
+   
+   Este método exibe o estado atual das filas de peças em todas as máquinas e na fila principal.
+
+6. **Método `main`**:
+   ```java
+   public static void main(String[] args) {
+       FilaProducao producao = new FilaProducao();
+       producao.adicionarPecasNaMaquina1(5);
+       producao.processarMaquina(1);
+       producao.processarMaquina(2);
+       producao.processarMaquina(3);
+   }
+   ```
+   
+   O método `main` cria uma instância de `FilaProducao` e executa uma série de ações simulando a adição de peças e o processamento das máquinas. As chamadas aos métodos `adicionarPecasNaMaquina1` e `processarMaquina` são usadas para demonstrar o funcionamento do programa.
+
+7. **Classe `Peca`**, **Classe `Celula`** e **Classe `ListaLigada`**:
+   
+   Essas classes são semelhantes à implementação anterior e são utilizadas para representar as peças, os elementos da lista ligada e a própria lista ligada.
+
+Esse código simula o processo de produção com três máquinas e uma fila de peças, onde as peças são movidas sequencialmente de uma máquina para outra, seguindo as etapas mencionadas na sua descrição. O programa exibe o estado atual das filas após cada ação realizada.
